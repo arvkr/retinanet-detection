@@ -13,6 +13,8 @@ def nms(dets, thresh):
     "Dispatch to either CPU or GPU NMS implementations.\
     Accept dets as tensor"""
     # return pth_nms(dets, thresh)
+    print(type(dets),dets.dtype,dets.shape)
+    print(dets)
     print(dets.device)
     print(dets.cpu().device)
     dets = dets.cpu().numpy()
