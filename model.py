@@ -13,7 +13,9 @@ def nms(dets, thresh):
     "Dispatch to either CPU or GPU NMS implementations.\
     Accept dets as tensor"""
     # return pth_nms(dets, thresh)
-    dets = dets.cpu().detach().numpy()
+    print(dets.device)
+    print(dets.cpu().device)
+    dets = dets.cpu().numpy()
     return gpu_nms(dets, thresh)
 
 model_urls = {
