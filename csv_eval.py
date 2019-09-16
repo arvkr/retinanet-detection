@@ -84,15 +84,17 @@ def _get_detections(dataset, retinanet, score_threshold=0.05, max_detections=100
         for index in range(len(dataset)):
             data = dataset[index]
             scale = data['scale']
-
+            print('1')
             device_cpu = torch.device("cpu")
             retinanet_cpu = retinanet.to(device_cpu)
             # run network
+            print('2')
             scores, labels, boxes = retinanet_cpu(data['img'].permute(2, 0, 1).float().unsqueeze(dim=0))
+            print('3')
             scores = scores.numpy()
             labels = labels.numpy()
             boxes  = boxes.numpy()
-
+            print('19')
             # correct boxes for image scale
             boxes /= scale
 
