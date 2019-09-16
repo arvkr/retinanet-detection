@@ -10,14 +10,7 @@ import losses
 from lib.nms.gpu_nms import gpu_nms
 
 def nms(dets, thresh):
-    "Dispatch to either CPU or GPU NMS implementations.\
-    Accept dets as tensor"""
-    # return pth_nms(dets, thresh)
-    # print(type(dets),dets.dtype,dets.shape)
-    # print(dets)
-    # print(dets.device)
-    # print(dets.cpu().device)
-    # dets = dets.cpu().numpy()
+    # "Dispatch to either CPU or GPU NMS implementations. Accept dets as tensor"""
     return gpu_nms(dets, thresh)
 
 model_urls = {
