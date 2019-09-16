@@ -22,7 +22,7 @@ import losses
 from dataloader import CocoDataset, CSVDataset, collater, Resizer, AspectRatioBasedSampler, Augmenter, UnNormalizer, Normalizer
 from torch.utils.data import Dataset, DataLoader
 
-import coco_eval
+# import coco_eval
 import csv_eval
 
 assert torch.__version__.split('.')[1] == '4'
