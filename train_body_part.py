@@ -154,6 +154,9 @@ for epoch_num in range(parser.epochs):
         mAP = csv_eval.evaluate(dataset_val, retinanet)
 
     scheduler.step(np.mean(epoch_loss))
+    if epoch_num%5 == 0:
+        torch.save(retinanet.module.state_dict(), './{}_retinanet_{}.pt'.format(parser.dataset, epoch_num))
+
 
 # torch.save(retinanet.module.state_dict(), './{}_retinanet_{}.pt'.format(parser.dataset, epoch_num))
 #
