@@ -11,7 +11,7 @@ from lib.nms.gpu_nms import gpu_nms
 
 def nms(dets, thresh):
     # "Dispatch to either CPU or GPU NMS implementations. Accept dets as tensor"""
-    return gpu_nms(dets, thresh)
+    return gpu_nms(dets.cpu().numpy(), thresh)
 
 model_urls = {
     'resnet18': 'https://download.pytorch.org/models/resnet18-5c106cde.pth',

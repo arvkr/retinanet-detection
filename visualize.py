@@ -15,9 +15,9 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision import datasets, models, transforms
 
 from dataloader import CocoDataset, CSVDataset, collater, Resizer, AspectRatioBasedSampler, Augmenter, UnNormalizer, Normalizer
+import model
 
-
-assert torch.__version__.split('.')[1] == '4'
+# assert torch.__version__.split('.')[1] == '4'
 
 print('CUDA available: {}'.format(torch.cuda.is_available()))
 
@@ -37,19 +37,23 @@ def main(args=None):
 	if parser.dataset == 'coco':
 		dataset_val = CocoDataset(parser.coco_path, set_name='val2017', transform=transforms.Compose([Normalizer(), Resizer()]))
 	elif parser.dataset == 'csv':
-		dataset_val = CSVDataset(train_file=parser.csv_train, class_list=parser.csv_classes, transform=transforms.Compose([Normalizer(), Resizer()]))
+		dataset_val = CSVDataset(train_file=parser.csv_val, class_list=parser.csv_classes, transform=transforms.Compose([Normalizer(), Resizer()]))
 	else:
 		raise ValueError('Dataset type not understood (must be csv or coco), exiting.')
 
 	sampler_val = AspectRatioBasedSampler(dataset_val, batch_size=1, drop_last=False)
 	dataloader_val = DataLoader(dataset_val, num_workers=1, collate_fn=collater, batch_sampler=sampler_val)
 
-	retinanet = torch.load(parser.model)
+	# print(parser.model)
+	retinanet = model.resnet50(num_classes=dataset_val.num_classes(), pretrained=True)
+	retinanet.load_state_dict(torch.load(parser.model))
+	# retinanet = torch.load(parser.model)
 
 	use_gpu = True
-
+	if torch.cuda.is_available():
+		device = torch.device("cuda")
 	if use_gpu:
-		retinanet = retinanet.cuda()
+		retinanet = retinanet.to(device)
 
 	retinanet.eval()
 
@@ -65,9 +69,9 @@ def main(args=None):
 
 		with torch.no_grad():
 			st = time.time()
-			scores, classification, transformed_anchors = retinanet(data['img'].cuda().float())
+			scores, classification, transformed_anchors = retinanet(data['img'].to(device).float())
 			print('Elapsed time: {}'.format(time.time()-st))
-			idxs = np.where(scores>0.5)
+			idxs = np.where(scores.cpu().numpy()>0.5)
 			img = np.array(255 * unnormalize(data['img'][0, :, :, :])).copy()
 
 			img[img<0] = 0

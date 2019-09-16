@@ -1,22 +1,22 @@
-from google.colab import drive
-drive.mount('/content/drive')
-!ls /content/drive/My\ Drive/pytorch_hackathon
-
-!git clone https://github.com/arvkr/retinanet-detection.git
-cd retinanet-detection/
-
-!pip3 install cffi
-!pip3 install pandas
-!pip3 install cython
-!pip3 install opencv-python
-!pip3 install requests
-
-cd lib/nms
-!rm -rf build/
-# !rm *so
-cd ../
-!python setup3.py build_ext --inplace
-cd ../
+# from google.colab import drive
+# drive.mount('/content/drive')
+# !ls /content/drive/My\ Drive/pytorch_hackathon
+#
+# !git clone https://github.com/arvkr/retinanet-detection.git
+# cd retinanet-detection/
+#
+# !pip3 install cffi
+# !pip3 install pandas
+# !pip3 install cython
+# !pip3 install opencv-python
+# !pip3 install requests
+#
+# cd lib/nms
+# !rm -rf build/
+# # !rm *so
+# cd ../
+# !python setup3.py build_ext --inplace
+# cd ../
 
 import time
 import os
@@ -46,7 +46,8 @@ from torch.utils.data import Dataset, DataLoader
 import csv_eval
 
 print('CUDA available: {}'.format(torch.cuda.is_available()))
-weights_path = '/content/drive/My Drive/pytorch_hackathon/coco_resnet_50_map_0_335_state_dict.pt'
+# weights_path = '/content/drive/My Drive/pytorch_hackathon/coco_resnet_50_map_0_335_state_dict.pt'
+weights_path = './checkpoints/coco_resnet_50_map_0_335_state_dict.pt'
 state_dict = torch.load(weights_path)
 state_dict.pop('classificationModel.output.bias')
 state_dict.pop('classificationModel.output.weight')
@@ -54,11 +55,11 @@ state_dict.pop('classificationModel.output.weight')
 class arguments:
   def __init__(self):
     self.dataset = 'csv'
-    self.csv_train = './annotations.csv'
+    self.csv_train = './annotations_train.csv'
     self.csv_classes = './classes.csv'
     self.depth = 50
-    self.epochs = 1
-    self.csv_val = None
+    self.epochs = 3
+    self.csv_val = './annotations_val.csv'
 parser = arguments()
 
 dataset_train = CSVDataset(train_file=parser.csv_train, class_list=parser.csv_classes, transform=transforms.Compose([Normalizer(), Augmenter(), Resizer()]))
@@ -66,6 +67,8 @@ dataset_train = CSVDataset(train_file=parser.csv_train, class_list=parser.csv_cl
 if parser.csv_val is None:
   dataset_val = None
   print('No validation annotations provided.')
+else:
+  dataset_val = CSVDataset(train_file=parser.csv_val, class_list=parser.csv_classes, transform=transforms.Compose([Normalizer(), Resizer()]))
 
 sampler = AspectRatioBasedSampler(dataset_train, batch_size=2, drop_last=False)
 dataloader_train = DataLoader(dataset_train, num_workers=3, collate_fn=collater, batch_sampler=sampler)
@@ -152,6 +155,6 @@ for epoch_num in range(parser.epochs):
 
     scheduler.step(np.mean(epoch_loss))
 
-torch.save(retinanet.module.state_dict(), './{}_retinanet_{}.pt'.format(parser.dataset, epoch_num))
-
-!cp ./testcsv_retinanet_1.pt /content/drive/My\ Drive/pytorch_hackathon
+# torch.save(retinanet.module.state_dict(), './{}_retinanet_{}.pt'.format(parser.dataset, epoch_num))
+#
+# !cp ./testcsv_retinanet_1.pt /content/drive/My\ Drive/pytorch_hackathon

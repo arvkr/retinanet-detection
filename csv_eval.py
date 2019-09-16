@@ -85,11 +85,13 @@ def _get_detections(dataset, retinanet, score_threshold=0.05, max_detections=100
             data = dataset[index]
             scale = data['scale']
 
+            device_cpu = torch.device("cpu")
+            retinanet_cpu = retinanet.to(device_cpu)
             # run network
-            scores, labels, boxes = retinanet(data['img'].permute(2, 0, 1).cuda().float().unsqueeze(dim=0))
-            scores = scores.cpu().numpy()
-            labels = labels.cpu().numpy()
-            boxes  = boxes.cpu().numpy()
+            scores, labels, boxes = retinanet_cpu(data['img'].permute(2, 0, 1).float().unsqueeze(dim=0))
+            scores = scores.numpy()
+            labels = labels.numpy()
+            boxes  = boxes.numpy()
 
             # correct boxes for image scale
             boxes /= scale
