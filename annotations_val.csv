@@ -1,0 +1,15 @@
+./dataset/clean_resized/8.jpg,317,100,370,126,neck
+./dataset/clean_resized/8.jpg,284,235,387,272,stomach
+./dataset/clean_resized/8.jpg,275,299,405,333,hip
+./dataset/clean_resized/9.jpg,241,277,333,314,neck
+./dataset/clean_resized/9.jpg,253,492,425,545,stomach
+./dataset/clean_resized/10.jpg,251,144,319,182,neck
+./dataset/clean_resized/10.jpg,215,318,329,368,stomach
+./dataset/clean_resized/10.jpg,198,379,349,417,hip
+./dataset/clean_resized/36.jpg,249,152,284,195,neck
+./dataset/clean_resized/36.jpg,202,337,345,371,stomach
+./dataset/clean_resized/36.jpg,214,405,370,434,hip
+./dataset/clean_resized/37.jpg,221,210,304,244,neck
+./dataset/clean_resized/37.jpg,146,491,345,538,stomach
+./dataset/clean_resized/38.jpg,89,413,383,498,stomach
+./dataset/clean_resized/38.jpg,202,188,283,215,neck

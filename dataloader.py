@@ -5,6 +5,7 @@ import torch
 import numpy as np
 import random
 import csv
+from future.utils import raise_from
 
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms, utils
@@ -372,7 +373,7 @@ class Resizer(object):
 
         return {'img': torch.from_numpy(new_image), 'annot': torch.from_numpy(annots), 'scale': scale}
 
-
+#Does random horizontal flips
 class Augmenter(object):
     """Convert ndarrays in sample to Tensors."""
 
