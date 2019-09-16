@@ -18,7 +18,7 @@ def nms(dets, thresh):
     # print(dets.device)
     # print(dets.cpu().device)
     # dets = dets.cpu().numpy()
-    return gpu_nms(dets.cpu().numpy(), thresh)
+    return gpu_nms(dets, thresh)
 
 model_urls = {
     'resnet18': 'https://download.pytorch.org/models/resnet18-5c106cde.pth',
